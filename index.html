@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>sendtona</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+        <div style="margin: 50px;"></div>
+        <div class="card text-left">
+          <div class="card-body">
+            <h4 class="card-title">#sendtona</h4>
+            <p class="card-text">Chào cậu. Chào mừng cậu đến với chiếc web bé nhỏ này của tớ. Tớ làm chiếc web này để cậu có thể gửi được những kỉ niệm dành cho tớ, những điều mà cậu không thể nói được một cách trực tiếp. Cậu có thể gửi cho tớ những điều tâm tình nhất mà cậu muốn nè ^^</p>
+            <!-- <p id="currentColor">Mỗi lần cậu vào web sẽ có 1 màu khác nhau, hiện tại web đang có màu nền là màu:</p> -->
+          </div>
+        </div>
+
+        <div style="margin: 50px;"></div>
+
+        <div class="card text-left">
+            <div class="card-body">
+              <h4 class="card-title">Hộp gửi iu thương</h4>
+              <div class="form-group">
+                <label for="">Tên của cậu là gì nhỉ</label>
+                <input type="text"
+                  class="form-control" name="" id="nameInput" aria-describedby="helpId" placeholder="", onKeyUp="nameWordCount()">
+                <small id="nameNote" class="form-text text-muted">Tên có thể bỏ trống, không vượt quá 100 kí tự kể cả khoảng trắng</small>
+                <div style="margin: 10px;"></div>
+                <label for="">Những điều mà cậu muốn nói</label>
+                <textarea type="text"
+                  class="form-control" name="" id="messInput" aria-describedby="helpId" placeholder="" onkeyup="messWordCount()"></textarea>
+                <small id="messNote" class="form-text text-muted">Có thể xuống hàng. Số kí tự câu đã gõ là:</small>
+              </div>
+              <a name="" id="" class="btn btn-primary" href="#" role="button" onclick="sendMess()">Gửi</a>
+            </div>        
+          </div>
+    </div>
+  </body>
+  <script>
+    let colorList = ["#FDDFDF","#FCF7DE"," #DEFDE0","#DEF3FD","#F0DEFD","#CEE5D0","#F5EBD3","#FBD4B5","#F4B6B2","#CE9FC2"]
+    
+
+    function nameWordCount(){
+        let countWord = document.getElementById("nameInput").value.length
+        document.getElementById("nameNote").innerHTML = "Tên có thể bỏ trống. Số kí tự cậu đã gõ là: "+countWord+"/100 kí tự"
+        // console.log((countWord != 0 && countWord < 100))
+        return (countWord < 100)
+    }
+    function messWordCount(){
+        let countMess = document.getElementById("messInput").value.length
+        document.getElementById("messNote").innerHTML = "Có thể xuống hàng. Số kí tự câu đã gõ là: "+countMess+"/2000 kí tự"
+        return (countMess != 0 && countMess < 2000)
+    }
+    function color(){
+         
+        let colorchoice = colorList[Math.floor(Math.random() * colorList.length)];
+        document.body.style.backgroundColor =colorchoice
+        // document.getElementById("currentColor").innerHTML="Mỗi lần cậu vào web sẽ có 1 màu khác nhau, hiện tại web đang có màu nền là màu: " +colorchoice
+        
+    }
+    nameWordCount()
+    messWordCount()
+    color()
+
+    function sendMess() {
+        
+        if(messWordCount() && nameWordCount()){
+            fetch("/api/post",{
+                method:"POST",
+                headers: {"Content-Type": "application/json"},
+                body:JSON.stringify({name:document.getElementById("nameInput").value != 0 ?document.getElementById("nameInput").value : "Người bạn giấu tên",message:document.getElementById("messInput").value})
+            })
+        }else{
+            alert("Bạn hãy kiểm tra số từ của phần tên và nội dung tin nhắn nha :v")
+        }
+    }
+  </script>
+</html>
