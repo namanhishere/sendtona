@@ -71,14 +71,25 @@
     messWordCount()
     color()
 
-    function sendMess() {
+    async function sendMess() {
         
         if(messWordCount() && nameWordCount()){
-            fetch("/api/post",{
-                method:"POST",
-                headers: {"Content-Type": "application/json"},
-                body:JSON.stringify({name:document.getElementById("nameInput").value != 0 ?document.getElementById("nameInput").value : "Người bạn giấu tên",message:document.getElementById("messInput").value})
-            })
+            try {
+                let data = await fetch("/api/post",{
+                    method:"POST",
+                    headers: {"Content-Type": "application/json"},
+                    body:JSON.stringify({name:document.getElementById("nameInput").value != 0 ?document.getElementById("nameInput").value : "Người bạn giấu tên",message:document.getElementById("messInput").value})
+                })
+                if(data.ok || !data.error()){
+                    alert("Tin nhắn của bạn đã được gửi thành công")
+                }else{
+                    alert("Tin nhắn của bạn không thể gửi được, có thể có lỗi gì đó,.. maybe")
+                }   
+            } catch (error) {
+                alert("Tin nhắn của bạn không thể gửi được, có thể có lỗi gì đó,.. maybe")
+            }
+            
+            
         }else{
             alert("Bạn hãy kiểm tra số từ của phần tên và nội dung tin nhắn nha :v")
         }

@@ -22,6 +22,7 @@ app.post('/api/post', (req, res) => {
             embeds: [embed],
         });
     console.log(req.body)
+    res.sendStatus(200)
 })
 
 app.listen(process.env.PORT||3000)
